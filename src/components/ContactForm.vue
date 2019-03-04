@@ -10,12 +10,9 @@
           <v-spacer></v-spacer>
           <v-card-text>
             <v-form ref="form" v-model="valid" @submit="onFormSubmit">
-              <v-text-field v-model="name" :rules="nameRules" label="Name">
-              </v-text-field>
-              <v-text-field v-model="email" :rules="emailRules" label="Email">
-              </v-text-field>
-              <v-text-field type="number" v-model="phone" :rules="phoneRules" label="Phone">
-              </v-text-field>
+              <v-text-field v-model="name" :rules="nameRules" label="Name"></v-text-field>
+              <v-text-field v-model="email" :rules="emailRules" label="Email"></v-text-field>
+              <v-text-field type="number" v-model="phone" :rules="phoneRules" label="Phone"></v-text-field>
               <v-btn type="submit" :disabled="!valid" color="primary">Submit</v-btn>
             </v-form>
           </v-card-text>
@@ -26,51 +23,49 @@
 </template>
 
 <script>
-import { isEmail } from 'validator';
+import { isEmail } from "validator";
 export default {
   name: "ContactForm",
-  props: ['contact'],
+  props: ["contact"],
   data() {
     return {
       valid: true,
       name: "",
-      nameRules: [
-          v => !!v || "Name is Required"
-      ],
+      nameRules: [v => !!v || "Name is Required"],
       email: "",
       emailRules: [
-          v => !!v || "Email is Required",
-          v => (v && isEmail(v)) || "Email Must Valid"
+        v => !!v || "Email is Required",
+        v => (v && isEmail(v)) || "Email Must Valid"
       ],
       phone: "",
-      phoneRules: [
-          v => !!v || "Phone is Required"
-      ],
+      phoneRules: [v => !!v || "Phone is Required"],
       errors: {}
     };
   },
   methods: {
-      onFormSubmit(e) {
-          e.preventDefault();
-          if (this.$refs.form.validate()) {
-              this.$emit('contact-form-submit', {
-                  name: this.name,
-                  email: this.email,
-                  phone: this.phone
-              })
-          }
-      },
-      prepopulate() {
-        this.name = this.contact.name
-        this.email = this.contact.email
-        this.phone = this.contact.phone
+    onFormSubmit(e) {
+      e.preventDefault();
+      if (this.$refs.form.validate()) {
+        this.$emit("contact-form-submit", {
+          name: this.name,
+          email: this.email,
+          phone: this.phone
+        });
       }
+    },
+    prepopulate() {
+      if (this.contact) {
+        this.name = this.contact.name;
+        this.email = this.contact.email;
+        this.phone = this.contact.phone;
+      }
+    }
   },
-  watch:{
-    contact: 'prepopulate'
+  watch: {
+    contact: "prepopulate"
   },
   created() {
-    this.prepopulate()
+    this.prepopulate();
   }
 };
 </script>
